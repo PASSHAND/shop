@@ -6,8 +6,7 @@ package hello
 
 import (
 	"context"
-
-	"goframe-shop/api/hello/v1"
+	"goframe-shop/api/v1"
 )
 
 type IHelloV1 interface {
