@@ -88,7 +88,7 @@ func (s *sRotation) GetList(ctx context.Context, in model.RotationGetListInput) 
 	if err != nil {
 		return out, err
 	}
-	// Rotation todo
+	// Rotation
 	if err := listModel.Scan(&out.List); err != nil {
 		return out, err
 	}
