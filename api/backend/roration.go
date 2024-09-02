@@ -11,7 +11,7 @@ type RotationReq struct {
 	Sort   int    `json:"sort"           dc:"排序"`
 }
 type RotationRes struct {
-	RotationId int `json:"rotationId"`
+	RotationId int `json:"rotation_id"`
 }
 
 type RotationDeleteReq struct {

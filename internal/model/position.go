@@ -43,23 +43,23 @@ type PositionGetListOutput struct {
 }
 
 // PositionSearchInput 搜索列表
-type PositionSearchInput struct {
-	Key        string // 关键字
-	Type       string // 内容模型
-	CategoryId uint   // 栏目ID
-	Page       int    // 分页号码
-	Size       int    // 分页数量，最大50
-	Sort       int    // 排序类型(0:最新, 默认。1:活跃, 2:热度)
-}
-
-// PositionSearchOutput 搜索列表结果
-type PositionSearchOutput struct {
-	List  []PositionSearchOutputItem `json:"list"`  // 列表
-	Stats map[string]int             `json:"stats"` // 搜索统计
-	Page  int                        `json:"page"`  // 分页码
-	Size  int                        `json:"size"`  // 分页数量
-	Total int                        `json:"total"` // 数据总数
-}
+//type PositionSearchInput struct {
+//	Key        string // 关键字
+//	Type       string // 内容模型
+//	CategoryId uint   // 栏目ID
+//	Page       int    // 分页号码
+//	Size       int    // 分页数量，最大50
+//	Sort       int    // 排序类型(0:最新, 默认。1:活跃, 2:热度)
+//}
+//
+//// PositionSearchOutput 搜索列表结果
+//type PositionSearchOutput struct {
+//	List  []PositionSearchOutputItem `json:"list"`  // 列表
+//	Stats map[string]int             `json:"stats"` // 搜索统计
+//	Page  int                        `json:"page"`  // 分页码
+//	Size  int                        `json:"size"`  // 分页数量
+//	Total int                        `json:"total"` // 数据总数
+//}
 
 type PositionGetListOutputItem struct {
 	Id        uint        `json:"id"` // 自增ID
