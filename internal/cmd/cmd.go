@@ -22,7 +22,8 @@ var (
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
 				group.Bind(
 					hello.NewV1(),
-					controller.Rotation,
+					controller.Rotation, //轮播图
+					controller.Position, //手工位
 				)
 			})
 			s.Run()
