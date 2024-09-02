@@ -28,3 +28,17 @@ type RotationUpdateReq struct {
 	Sort   int    `json:"sort"       dc:"排序"`
 }
 type RotationUpdateRes struct{}
+
+type RotationGetListCommonReq struct {
+	g.Meta `path:"/backend/rotation/list" method:"get" tags:"轮播图" summary:"轮播图列表"`
+	Sort   int `json:"sort"   in:"query" dc:"排序类型"`
+	CommonPaginationReq
+}
+type RotationGetListCommonRes struct {
+	//前后端分离不返回html
+	//g.Meta `mime:"text/html" type:"string" example:"<html/>"`
+	List  interface{} `json:"list" description:"列表"`
+	Page  int         `json:"page" description:"分页码"`
+	Size  int         `json:"size" description:"分页数量"`
+	Total int         `json:"total" description:"数据总数"`
+}
