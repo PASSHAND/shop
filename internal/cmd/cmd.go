@@ -51,10 +51,10 @@ var (
 					service.Middleware().ResponseHandler,
 				)
 				//gtoken中间件
-				err := gfToken.Middleware(ctx, group)
-				if err != nil {
-					panic(err)
-				}
+				//err := gfToken.Middleware(ctx, group)
+				//if err != nil {
+				//	panic(err)
+				//}
 				group.Bind(
 					hello.NewV1(),
 					controller.Rotation, //轮播图
@@ -64,10 +64,15 @@ var (
 					controller.Admin.Delete,
 					controller.Admin.Update, //管理员
 					controller.Login,        //登陆
+					controller.Data,
 				)
 				group.Group("/", func(group *ghttp.RouterGroup) {
 					//for jwt
 					//group.Middleware(service.Middleware().Auth)
+					err := gfToken.Middleware(ctx, group)
+					if err != nil {
+						panic(err)
+					}
 					group.ALLMap(g.Map{
 						"/backend/admin/info": controller.Admin.Info,
 					})
