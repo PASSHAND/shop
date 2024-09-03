@@ -27,9 +27,31 @@ func (a *cRole) Create(ctx context.Context, req *backend.RoleReq) (res *backend.
 	return &backend.RoleRes{RoleId: out.RoleId}, nil
 }
 
+// 角色添加权限
+func (c *cRole) AddPermission(ctx context.Context, req *backend.AddPermissionReq) (res *backend.AddPermissionRes, err error) {
+	permission, err := service.Role().AddPermission(ctx, model.RoleAddPermissionInput{
+		RoleId:       req.RoleId,
+		PermissionId: req.PermissionId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &backend.AddPermissionRes{Id: permission.Id}, err
+}
+
 func (a *cRole) Delete(ctx context.Context, req *backend.RoleDeleteReq) (res *backend.RoleDeleteRes, err error) {
 	err = service.Role().Delete(ctx, req.Id)
 	return
+}
+func (c *cRole) DeletePermission(ctx context.Context, req *backend.DeletePermissionReq) (res *backend.DeletePermissionRes, err error) {
+	err = service.Role().DeletePermission(ctx, model.RoleDeletePermissionInput{
+		RoleId:       req.RoleId,
+		PermissionId: req.PermissionId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &backend.DeletePermissionRes{}, err
 }
 
 func (a *cRole) Update(ctx context.Context, req *backend.RoleUpdateReq) (res *backend.RoleUpdateRes, err error) {
