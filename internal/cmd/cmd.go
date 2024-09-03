@@ -64,7 +64,8 @@ var (
 					controller.Admin.Delete,
 					controller.Admin.Update, //管理员
 					controller.Login,        //登陆
-					controller.Data,
+					controller.Data,         //数据大屏
+					controller.Role,         //角色
 				)
 				group.Group("/", func(group *ghttp.RouterGroup) {
 					//for jwt
