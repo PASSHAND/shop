@@ -31,7 +31,7 @@ var (
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			s := g.Server()
 			// 启动gtoken
-			gfToken := &gtoken.GfToken{
+			gfAdminToken := &gtoken.GfToken{
 				ServerName:       "shop",
 				LoginPath:        "/backend/login",
 				CacheMode:        2,
@@ -71,13 +71,17 @@ var (
 				group.Group("/", func(group *ghttp.RouterGroup) {
 					//for jwt
 					//group.Middleware(service.Middleware().Auth)
-					err := gfToken.Middleware(ctx, group)
+
+					err := gfAdminToken.Middleware(ctx, group)
 					if err != nil {
 						panic(err)
 					}
 					group.ALLMap(g.Map{
 						"/backend/admin/info": controller.Admin.Info,
 					})
+					group.Bind(
+						controller.File,
+					)
 				})
 			})
 			s.Run()
