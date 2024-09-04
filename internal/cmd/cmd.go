@@ -66,6 +66,7 @@ var (
 					controller.Login,        //登陆
 					controller.Data,         //数据大屏
 					controller.Role,         //角色
+					controller.Permission,   //权限
 				)
 				group.Group("/", func(group *ghttp.RouterGroup) {
 					//for jwt
