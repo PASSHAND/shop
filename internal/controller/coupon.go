@@ -49,7 +49,6 @@ func (a *cCoupon) List(ctx context.Context, req *backend.CouponGetListCommonReq)
 	getListRes, err := service.Coupon().GetList(ctx, model.CouponGetListInput{ //带着List出来
 		Page: req.Page,
 		Size: req.Size,
-		Sort: req.Sort,
 	})
 	if err != nil {
 		return nil, err
