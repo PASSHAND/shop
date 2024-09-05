@@ -4,9 +4,9 @@ import "github.com/gogf/gf/v2/frame/g"
 
 type CategoryReq struct {
 	g.Meta `path:"/category/add" tags:"商品分类" method:"post" summary:"添加商品分类"`
-	CommonAddUpdate
+	CategoryCommonAddUpdate
 }
-type CommonAddUpdate struct {
+type CategoryCommonAddUpdate struct {
 	ParentId int    `json:"parent_id"         dc:"父类id"`
 	Name     string `json:"name" v:"required#名称必填" dc:"名称"`
 	PicUrl   string `json:"pic_url"        v:"required#图片链接不能为空" dc:"图片链接"`
@@ -26,7 +26,7 @@ type CategoryDeleteRes struct{}
 type CategoryUpdateReq struct {
 	g.Meta `path:"/category/update/{Id}" method:"post" tags:"商品分类" summary:"修改商品分类接口"`
 	Id     uint `json:"id"         v:"min:1#请选择需要修改的内容" dc:"商品分类Id"`
-	CommonAddUpdate
+	CategoryCommonAddUpdate
 }
 type CategoryUpdateRes struct{}
 
@@ -41,5 +41,15 @@ type CategoryGetListCommonRes struct {
 	List  interface{} `json:"list" description:"列表"`
 	Page  int         `json:"page" description:"分页码"`
 	Size  int         `json:"size" description:"分页数量"`
+	Total int         `json:"total" description:"数据总数"`
+}
+
+type CategoryGetListAllCommonReq struct {
+	g.Meta `path:"/category/list/all" method:"get" tags:"商品分类" summary:"商品分类列表接口"`
+}
+type CategoryGetListAllCommonRes struct {
+	//前后端分离不返回html
+	//g.Meta `mime:"text/html" type:"string" example:"<html/>"`
+	List  interface{} `json:"list" description:"列表"`
 	Total int         `json:"total" description:"数据总数"`
 }

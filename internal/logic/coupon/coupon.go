@@ -1,4 +1,4 @@
-package category
+package coupon
 
 import (
 	"context"
@@ -10,33 +10,33 @@ import (
 	"goframe-shop/internal/service"
 )
 
-type sCategory struct{}
+type sCoupon struct{}
 
 func init() {
-	service.RegisterCategory(New())
+	service.RegisterCoupon(New())
 }
 
-func New() *sCategory {
-	return &sCategory{}
+func New() *sCoupon {
+	return &sCoupon{}
 }
 
-func (s *sCategory) Create(ctx context.Context, in model.CategoryCreateInput) (out model.CategoryCreateOutput, err error) {
+func (s *sCoupon) Create(ctx context.Context, in model.CouponCreateInput) (out model.CouponCreateOutput, err error) {
 	// 不允许HTML代码
 	if err = ghtml.SpecialCharsMapOrStruct(in); err != nil {
 		return out, err
 	}
-	lastInsertID, err := dao.CategoryInfo.Ctx(ctx).Data(in).InsertAndGetId()
+	lastInsertID, err := dao.CouponInfo.Ctx(ctx).Data(in).InsertAndGetId()
 	if err != nil {
 		return out, err
 	}
-	return model.CategoryCreateOutput{CategoryId: int(lastInsertID)}, err
+	return model.CouponCreateOutput{CouponId: uint(lastInsertID)}, err
 }
 
 // Delete 删除
-func (s *sCategory) Delete(ctx context.Context, id uint) (err error) {
+func (s *sCoupon) Delete(ctx context.Context, id uint) (err error) {
 	// 删除内容
-	_, err = dao.CategoryInfo.Ctx(ctx).Where(g.Map{
-		dao.CategoryInfo.Columns().Id: id,
+	_, err = dao.CouponInfo.Ctx(ctx).Where(g.Map{
+		dao.CouponInfo.Columns().Id: id,
 	}).Delete() //加上.Unscoped()物理删除
 	if err != nil {
 		return err
@@ -46,22 +46,22 @@ func (s *sCategory) Delete(ctx context.Context, id uint) (err error) {
 }
 
 // Update 修改
-func (s *sCategory) Update(ctx context.Context, in model.CategoryUpdateInput) error {
-	_, err := dao.CategoryInfo.
+func (s *sCoupon) Update(ctx context.Context, in model.CouponUpdateInput) error {
+	_, err := dao.CouponInfo.
 		Ctx(ctx).
 		Data(in). //插入数据，in传进的数据会到data里面
-		FieldsEx(dao.CategoryInfo.Columns().Id).
-		Where(dao.CategoryInfo.Columns().Id, in.Id).
+		FieldsEx(dao.CouponInfo.Columns().Id).
+		Where(dao.CouponInfo.Columns().Id, in.Id).
 		Update()
 	return err
 }
 
 // GetList 查询分类列表
-func (s *sCategory) GetList(ctx context.Context, in model.CategoryGetListInput) (out *model.CategoryGetListOutput, err error) {
+func (s *sCoupon) GetList(ctx context.Context, in model.CouponGetListInput) (out *model.CouponGetListOutput, err error) {
 	var (
-		m = dao.CategoryInfo.Ctx(ctx)
+		m = dao.CouponInfo.Ctx(ctx)
 	)
-	out = &model.CategoryGetListOutput{
+	out = &model.CouponGetListOutput{
 		Page: in.Page,
 		Size: in.Size,
 	}
@@ -69,9 +69,9 @@ func (s *sCategory) GetList(ctx context.Context, in model.CategoryGetListInput) 
 	// 分页查询
 	listModel := m.Page(in.Page, in.Size)
 	// 排序方式
-	listModel = listModel.OrderDesc(dao.CategoryInfo.Columns().Id)
+	listModel = listModel.OrderDesc(dao.CouponInfo.Columns().Price)
 	// 执行查询
-	var list []*entity.CategoryInfo
+	var list []*entity.CouponInfo
 	if err := listModel.Scan(&list); err != nil {
 		return out, err
 	}
@@ -83,7 +83,7 @@ func (s *sCategory) GetList(ctx context.Context, in model.CategoryGetListInput) 
 	if err != nil {
 		return out, err
 	}
-	// Category
+	// Coupon
 	if err := listModel.Scan(&out.List); err != nil {
 		return out, err
 	}
@@ -91,18 +91,18 @@ func (s *sCategory) GetList(ctx context.Context, in model.CategoryGetListInput) 
 }
 
 // GetList 查询分类列表,不翻页
-func (s *sCategory) GetListAll(ctx context.Context, in model.CategoryGetListInput) (out *model.CategoryGetListOutput, err error) {
+func (s *sCoupon) GetListAll(ctx context.Context, in model.CouponGetListInput) (out *model.CouponGetListOutput, err error) {
 	var (
-		m = dao.CategoryInfo.Ctx(ctx)
+		m = dao.CouponInfo.Ctx(ctx)
 	)
-	out = &model.CategoryGetListOutput{}
+	out = &model.CouponGetListOutput{}
 
 	// 分页查询
 	listModel := m
 	// 排序方式
-	listModel = listModel.OrderDesc(dao.CategoryInfo.Columns().Sort)
+	listModel = listModel.OrderDesc(dao.CouponInfo.Columns().Price)
 	// 执行查询
-	var list []*entity.CategoryInfo
+	var list []*entity.CouponInfo
 	//查询内容赋值实体
 	if err := listModel.Scan(&list); err != nil {
 		return out, err
@@ -115,7 +115,7 @@ func (s *sCategory) GetListAll(ctx context.Context, in model.CategoryGetListInpu
 	if err != nil {
 		return out, err
 	}
-	// Category
+	// Coupon
 	if err := listModel.Scan(&out.List); err != nil {
 		return out, err
 	}
