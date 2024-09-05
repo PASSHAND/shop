@@ -60,8 +60,9 @@ var (
 						"/admin/info": controller.Admin.Info,
 					})
 					group.Bind(
-						controller.File,   //文件入库
-						controller.Upload, //可跨项目使用的文件上云工具类
+						controller.File,     //文件入库
+						controller.Upload,   //可跨项目使用的文件上云工具类
+						controller.Category, //商品分类管理
 					)
 				})
 			})
