@@ -65,6 +65,7 @@ var (
 						controller.Category,   //商品分类管理
 						controller.Coupon,     //商品优惠券
 						controller.UserCoupon, //用户优惠券
+						controller.Goods,      //商品管理
 					)
 				})
 			})
