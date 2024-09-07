@@ -9,15 +9,18 @@ const (
 	ContextKey               = "ContextKey"         // 上下文变量存储键名，前后端系统共享
 	FileMaxUploadCountMinute = 10                   // 同一用户1分钟之内最大上传数量
 	GTokenAdminPrefix        = "Admin:"             //gtoken管理后台前缀
+	GTokenFrontendPrefix     = "User:"              //gtoken管理前台前缀
 	//for admin
-	CtxAdminId        = "CtxAdminId"
-	CtxAdminName      = "CtxAdminName"
-	CtxAdminIsAdmin   = "CtxAdminIsAdmin"
-	CtxAdminRoleIds   = "CtxAdminRoleIds"
-	CacheModelRedis   = 2
-	BackendServerName = "shop"
-	MultiLogin        = true
-	GTokenExpireIn    = 10 * 24 * 60 * 60
+	CtxAdminId         = "CtxAdminId"
+	CtxAdminName       = "CtxAdminName"
+	CtxAdminIsAdmin    = "CtxAdminIsAdmin"
+	CtxAdminRoleIds    = "CtxAdminRoleIds"
+	CacheModelRedis    = 2
+	TokenType          = "Bearer"
+	BackendServerName  = "shop"
+	MultiLogin         = true
+	FrontendMultiLogin = false
+	GTokenExpireIn     = 10 * 24 * 60 * 60
 	//同一管理错误信息
 	CodeMissingParameterMsg = "请检查是否缺少参数"
 	ErrLoginFaulMsg         = "登录失败，账号或密码错误"

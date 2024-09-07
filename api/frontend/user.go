@@ -1,9 +1,11 @@
 package frontend
 
-import "github.com/gogf/gf/v2/frame/g"
+import (
+	"github.com/gogf/gf/v2/frame/g"
+)
 
 type RegisterReq struct {
-	g.Meta       `path:"/register" method:"post" tags:"前台注册" summary:"前台注册接口"`
+	g.Meta       `path:"/register" method:"post" tags:"前台注册" summary:"前台用户注册接口"`
 	Name         string `json:"name"         description:"用户名" v:"required#用户名必填"`
 	Avatar       string `json:"avatar"       description:"头像"`
 	Password     string `json:"password"     description:"密码" v:"password"`
@@ -16,4 +18,22 @@ type RegisterReq struct {
 
 type RegisterRes struct {
 	Id uint `json:"id"`
+}
+
+type LoginReq struct {
+	g.Meta   `path:"/login" method:"post" tags:"前台登录" summary:"前台用户登录接口"`
+	Name     string `json:"name"         description:"用户名" v:"required#用户名必填"`
+	Password string `json:"password"     description:"密码" v:"password"`
+}
+
+// for gtoken
+type LoginRes struct {
+	Type     string `json:"type"`
+	Token    string `json:"token"`
+	ExpireIn int    `json:"expire_in"`
+	Name     string `json:"name"`   //姓名
+	Avatar   string `json:"avatar"` //头像
+	Sex      uint8  `json:"sex"`
+	Sign     string `json:"sign"`
+	Status   uint8  `json:"status"`
 }

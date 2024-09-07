@@ -39,7 +39,7 @@ var (
 				group.Bind(
 					hello.NewV1(),
 					controller.Admin.Create,
-					controller.Login, //登陆
+					controller.Login, //jwt登陆,已弃用
 				)
 				//需要登录的路由组绑定
 				group.Group("/", func(group *ghttp.RouterGroup) {
@@ -73,6 +73,10 @@ var (
 					)
 				})
 			})
+			frontendToken, err := StartFrontendGToken()
+			if err != nil {
+				return err
+			}
 			//管理前台路由组
 			s.Group("/frontend", func(group *ghttp.RouterGroup) {
 				group.Middleware( //自定义中间件
@@ -84,6 +88,14 @@ var (
 					controller.User.Register,
 					//controller.Login, //登陆
 				)
+				//需要登录鉴权路由组
+				group.Group("/", func(group *ghttp.RouterGroup) {
+					err := frontendToken.Middleware(ctx, group)
+					if err != nil {
+						return
+					}
+					group.Bind()
+				})
 			})
 			s.Run()
 			return nil

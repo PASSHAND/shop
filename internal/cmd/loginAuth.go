@@ -8,6 +8,7 @@ import (
 	"github.com/gogf/gf/v2/text/gstr"
 	"github.com/gogf/gf/v2/util/gconv"
 	"goframe-shop/api/backend"
+	"goframe-shop/api/frontend"
 	"goframe-shop/internal/consts"
 	"goframe-shop/internal/dao"
 	"goframe-shop/internal/model/entity"
@@ -34,6 +35,24 @@ func StartBackendGToken() (gfAdminToken *gtoken.GfToken, err error) {
 	return
 }
 
+// 管理前台相关
+func StartFrontendGToken() (gfFrontendToken *gtoken.GfToken, err error) {
+	gfFrontendToken = &gtoken.GfToken{
+		ServerName:      consts.BackendServerName,
+		LoginPath:       "/login",
+		CacheMode:       consts.CacheModelRedis,
+		LoginBeforeFunc: loginFuncFrontend,
+		LoginAfterFunc:  loginAfterFuncFrontend,
+		LogoutPath:      "/user/logout",
+		//AuthPaths:        g.SliceStr{"/backend/admin/info"},
+		//AuthExcludePaths: g.SliceStr{"/user/info", "/system/user/info"}, // 不拦截路径 /user/info,/system/user/info,/system/user,
+		MultiLogin:    consts.FrontendMultiLogin,
+		AuthAfterFunc: authAfterFunc,
+	}
+	//err = gfAdminToken.Start()
+	return
+}
+
 func loginFunc(r *ghttp.Request) (string, interface{}) {
 	name := r.Get("name").String()
 	password := r.Get("password").String()
@@ -55,6 +74,30 @@ func loginFunc(r *ghttp.Request) (string, interface{}) {
 	}
 	// 唯一标识，扩展参数user data
 	return consts.GTokenAdminPrefix + strconv.Itoa(adminInfo.Id), adminInfo
+}
+
+// 前台登录使用
+func loginFuncFrontend(r *ghttp.Request) (string, interface{}) {
+	name := r.Get("name").String()
+	password := r.Get("password").String()
+	ctx := context.TODO()
+	if name == "" || password == "" {
+		r.Response.WriteJson(gtoken.Fail(consts.ErrLoginFaulMsg))
+		r.ExitAll()
+	}
+	//验证账号密码是否正确
+	userInfo := entity.UserInfo{}
+	err := dao.UserInfo.Ctx(ctx).Where(dao.UserInfo.Columns().Name, name).Scan(&userInfo)
+	if err != nil {
+		r.Response.WriteJson(gtoken.Fail(consts.ErrLoginFaulMsg))
+		r.ExitAll()
+	}
+	if utility.EncryptPassword(password, userInfo.UserSalt) != userInfo.Password {
+		r.Response.WriteJson(gtoken.Fail(consts.ErrLoginFaulMsg))
+		r.ExitAll()
+	}
+	// 唯一标识，扩展参数user data
+	return consts.GTokenFrontendPrefix + strconv.Itoa(userInfo.Id), userInfo
 }
 
 // 自定义的登录之后的函数
@@ -92,12 +135,46 @@ func loginAfterFunc(r *ghttp.Request, respData gtoken.Resp) {
 			return
 		}
 		data := &backend.LoginRes{
-			Type:        "Bearer",
+			Type:        consts.TokenType,
 			Token:       respData.GetString("token"),
 			ExpireIn:    consts.GTokenExpireIn, //单位秒,
 			IsAdmin:     adminInfo.IsAdmin,
 			RoleIds:     adminInfo.RoleIds,
 			Permissions: permissions,
+		}
+		response.JsonExit(r, 0, "", data)
+	}
+	return
+}
+
+// 自定义的登录之后的函数，前台
+func loginAfterFuncFrontend(r *ghttp.Request, respData gtoken.Resp) {
+	if !respData.Success() {
+		respData.Code = 0
+		r.Response.WriteJson(respData)
+		return
+	} else {
+		respData.Code = 1
+		//获得登录用户id
+		userKey := respData.GetString("userKey")
+		//去除前缀，获取id
+		userId := gstr.StrEx(userKey, consts.GTokenFrontendPrefix)
+		//根据id获得登录用户其他信息
+		userInfo := entity.UserInfo{}
+		//scan赋值到userinfo里
+		err := dao.UserInfo.Ctx(context.TODO()).WherePri(userId).Scan(&userInfo)
+		if err != nil {
+			return
+		}
+
+		data := &frontend.LoginRes{
+			Type:     consts.TokenType,
+			Token:    respData.GetString("token"),
+			ExpireIn: consts.GTokenExpireIn, //单位秒,
+			Name:     userInfo.Name,
+			Avatar:   userInfo.Avatar,
+			Sign:     userInfo.Sign,
+			Status:   uint8(userInfo.Status),
 		}
 		response.JsonExit(r, 0, "", data)
 	}
