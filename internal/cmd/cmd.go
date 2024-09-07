@@ -22,6 +22,7 @@ var (
 			s := g.Server()
 			// 启动管理后台gtoken
 			gfAdminToken, err := StartBackendGToken()
+			//管理后台路由组
 			s.Group("/backend", func(group *ghttp.RouterGroup) {
 				//group.Middleware(ghttp.MiddlewareHandlerResponse)
 				group.Middleware( //自定义中间件
@@ -37,16 +38,8 @@ var (
 				//不需要登陆的路由组绑定
 				group.Bind(
 					hello.NewV1(),
-					controller.Rotation, //轮播图
-					controller.Position, //手工位
 					controller.Admin.Create,
-					controller.Admin.List,
-					controller.Admin.Delete,
-					controller.Admin.Update, //管理员
-					controller.Login,        //登陆
-					controller.Data,         //数据大屏
-					controller.Role,         //角色
-					controller.Permission,   //权限
+					controller.Login, //登陆
 				)
 				//需要登录的路由组绑定
 				group.Group("/", func(group *ghttp.RouterGroup) {
@@ -56,10 +49,19 @@ var (
 					if err != nil {
 						panic(err)
 					}
-					group.ALLMap(g.Map{
-						"/admin/info": controller.Admin.Info,
-					})
+					//group.ALLMap(g.Map{
+					//	"/admin/info": controller.Admin.Info,
+					//})
 					group.Bind(
+						controller.Rotation,   //轮播图
+						controller.Position,   //手工位
+						controller.Data,       //数据大屏
+						controller.Role,       //角色
+						controller.Permission, //权限
+						controller.Admin.List,
+						controller.Admin.Delete,
+						controller.Admin.Update, //管理员
+						controller.Admin.Info,   //查询当前管理员信息
 						controller.File,         //文件入库
 						controller.Upload,       //可跨项目使用的文件上云工具类
 						controller.Category,     //商品分类管理
@@ -70,6 +72,18 @@ var (
 						controller.Article,      //文章管理
 					)
 				})
+			})
+			//管理前台路由组
+			s.Group("/frontend", func(group *ghttp.RouterGroup) {
+				group.Middleware( //自定义中间件
+					service.Middleware().CORS,
+					service.Middleware().Ctx,
+					service.Middleware().ResponseHandler,
+				)
+				group.Bind(
+					controller.User.Register,
+					//controller.Login, //登陆
+				)
 			})
 			s.Run()
 			return nil
