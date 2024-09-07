@@ -31,9 +31,22 @@ type LoginRes struct {
 	Type     string `json:"type"`
 	Token    string `json:"token"`
 	ExpireIn int    `json:"expire_in"`
-	Name     string `json:"name"`   //姓名
-	Avatar   string `json:"avatar"` //头像
-	Sex      uint8  `json:"sex"`
-	Sign     string `json:"sign"`
-	Status   uint8  `json:"status"`
+	UserInfoBase
+}
+
+type UserInfoReq struct { //登录后用于上下文赋值
+	g.Meta `path:"/user/info" method:"get" tags:"前台用户" summary:"当前登录用户信息"`
+}
+
+type UserinfoRes struct {
+	UserInfoBase
+}
+
+type UserInfoBase struct {
+	Id     uint   `json:"id"`
+	Name   string `json:"name"`   //姓名
+	Avatar string `json:"avatar"` //头像
+	Sex    uint8  `json:"sex"`
+	Sign   string `json:"sign"`
+	Status uint8  `json:"status"`
 }

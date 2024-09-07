@@ -73,6 +73,8 @@ var (
 					)
 				})
 			})
+			//---------------------------------------------------------------------
+			//启动前台路由
 			frontendToken, err := StartFrontendGToken()
 			if err != nil {
 				return err
@@ -94,7 +96,9 @@ var (
 					if err != nil {
 						return
 					}
-					group.Bind()
+					group.Bind(
+						controller.User.Info,
+					)
 				})
 			})
 			s.Run()

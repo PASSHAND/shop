@@ -11,10 +11,18 @@ const (
 	GTokenAdminPrefix        = "Admin:"             //gtoken管理后台前缀
 	GTokenFrontendPrefix     = "User:"              //gtoken管理前台前缀
 	//for admin
-	CtxAdminId         = "CtxAdminId"
-	CtxAdminName       = "CtxAdminName"
-	CtxAdminIsAdmin    = "CtxAdminIsAdmin"
-	CtxAdminRoleIds    = "CtxAdminRoleIds"
+	CtxAdminId      = "CtxAdminId"
+	CtxAdminName    = "CtxAdminName"
+	CtxAdminIsAdmin = "CtxAdminIsAdmin"
+	CtxAdminRoleIds = "CtxAdminRoleIds"
+	//for user
+	CtxUserId     = "CtxUserId"
+	CtxUserName   = "CtxUserName"
+	CtxUserAvatar = "CtxUserAvatar"
+	CtxUserSex    = "CtxUserSex"
+	CtxUserSign   = "CtxUserSign"
+	CtxUserStatus = "CtxUserStatus"
+	//for login
 	CacheModelRedis    = 2
 	TokenType          = "Bearer"
 	BackendServerName  = "shop"
