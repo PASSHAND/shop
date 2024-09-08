@@ -50,3 +50,14 @@ type UserInfoBase struct {
 	Sign   string `json:"sign"`
 	Status uint8  `json:"status"`
 }
+
+type UpdatePasswordReq struct {
+	g.Meta       `path:"/update/password" method:"post" tags:"前台用户" summary:"修改密码"`
+	Password     string `json:"password"     description:"密码" v:"password"`
+	UserSalt     string `json:"userSalt,omitempty"     description:"加密盐 生成密码用"`
+	SecretAnswer string `json:"secretAnswer" description:"密保问题的答案"`
+}
+
+type UpdatePasswordRes struct {
+	Id uint `json:"id"`
+}

@@ -32,4 +32,5 @@ const (
 	//同一管理错误信息
 	CodeMissingParameterMsg = "请检查是否缺少参数"
 	ErrLoginFaulMsg         = "登录失败，账号或密码错误"
+	ErrSecretAnswerMsg      = "密保问题不正确"
 )
