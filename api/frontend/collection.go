@@ -45,18 +45,19 @@ type ListCollectionItem struct {
 	Article  interface{} `json:"article" `
 }
 
-type GoodsItem struct {
-	g.Meta `orm:"table:goods_info"`
-	Id     uint   `json:"id"`
-	Name   string `json:"name"`
-	PicUrl string `json:"picUrl"`
-	Price  int    `json:"price"`
-}
-
-type ArticleItem struct {
-	g.Meta `orm:"table:article_info"`
-	Id     uint   `json:"id"`
-	Title  string `json:"title"`
-	Desc   string `json:"desc"`
-	PicUrl string `json:"pic_url"`
-}
+//
+//type GoodsItem struct {
+//	g.Meta `orm:"table:goods_info"`
+//	Id     uint   `json:"id"`
+//	Name   string `json:"name"`
+//	PicUrl string `json:"picUrl"`
+//	Price  int    `json:"price"`
+//}
+//
+//type ArticleItem struct {
+//	g.Meta `orm:"table:article_info"`
+//	Id     uint   `json:"id"`
+//	Title  string `json:"title"`
+//	Desc   string `json:"desc"`
+//	PicUrl string `json:"pic_url"`
+//}

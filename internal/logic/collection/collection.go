@@ -108,7 +108,7 @@ func CollectionCount(ctx context.Context, objectId uint, collectionType uint8) (
 }
 
 // 抽取方法判断当前用户是否收藏
-func CheckIsCollection(ctx context.Context, in model.CheckIsCollection) (bool, error) {
+func CheckIsCollection(ctx context.Context, in model.CheckIsCollectionInput) (bool, error) {
 	condition := g.Map{
 		dao.CollectionInfo.Columns().UserId:   ctx.Value(consts.CtxUserId),
 		dao.CollectionInfo.Columns().ObjectId: in.ObjectId,

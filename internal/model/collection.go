@@ -68,7 +68,7 @@ type ArticleItem struct {
 }
 
 // 校验当前用户是否收藏
-type CheckIsCollection struct {
+type CheckIsCollectionInput struct {
 	UserId   uint
 	ObjectId uint
 	Type     uint8
