@@ -15,6 +15,7 @@ type (
 		AddCollection(ctx context.Context, in model.AddCollectionInput) (out *model.AddCollectionOutput, err error)
 		// id为0按照对象和type删除
 		DeleteCollection(ctx context.Context, in model.DeleteCollectionInput) (out *model.DeleteCollectionOutput, err error)
+		GetList(ctx context.Context, in model.CollectionListInput) (out *model.CollectionListOutput, err error)
 	}
 )
 

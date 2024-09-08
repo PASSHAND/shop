@@ -50,3 +50,45 @@ func (s *sCollection) DeleteCollection(ctx context.Context, in model.DeleteColle
 	}
 
 }
+
+func (s *sCollection) GetList(ctx context.Context, in model.CollectionListInput) (out *model.CollectionListOutput, err error) {
+	var (
+		m = dao.CollectionInfo.Ctx(ctx)
+	)
+	out = &model.CollectionListOutput{
+		Page: in.Page,
+		Size: in.Size,
+		List: []model.CollectionListOutputItem{}, //数据为空时返回空数组
+	}
+
+	// 分页查询
+	listModel := m.Page(in.Page, in.Size)
+	//只查询类型相同的
+	if in.Type != 0 {
+		listModel = listModel.Where(dao.CollectionInfo.Columns().Type, in.Type)
+	}
+	//优化：优先查询count
+	out.Total, err = listModel.Count()
+	if err != nil {
+		return out, err
+	}
+	if out.Total == 0 {
+		return out, err
+	}
+	// Collection
+	if in.Type == consts.CollectionTypeGoods {
+		if err := listModel.With(model.GoodsItem{}).Scan(&out.List); err != nil {
+			return out, err
+		}
+	} else if in.Type == consts.CollectionTypeArticle {
+		if err := listModel.With(model.ArticleItem{}).Scan(&out.List); err != nil {
+			return out, err
+		}
+	} else {
+		if err := listModel.WithAll().Scan(&out.List); err != nil {
+			return out, err
+		}
+	}
+
+	return
+}
