@@ -81,7 +81,7 @@ func (s *sPraise) GetList(ctx context.Context, in model.PraiseListInput) (out *m
 		if err := listModel.With(model.GoodsItem{}).Scan(&out.List); err != nil {
 			return out, err
 		}
-	} else if in.Type == consts.CollectionTypeArticle {
+	} else if in.Type == consts.PraiseTypeArticle {
 		if err := listModel.With(model.ArticleItem{}).Scan(&out.List); err != nil {
 			return out, err
 		}
@@ -94,7 +94,7 @@ func (s *sPraise) GetList(ctx context.Context, in model.PraiseListInput) (out *m
 	return
 }
 
-// 抽取获得收藏数量的方法
+// 抽取获得点赞数量的方法
 func PraiseCount(ctx context.Context, objectId uint, collectionType uint8) (count int, err error) {
 	condition := g.Map{
 		dao.PraiseInfo.Columns().ObjectId: objectId,
@@ -107,7 +107,7 @@ func PraiseCount(ctx context.Context, objectId uint, collectionType uint8) (coun
 	return
 }
 
-// 抽取方法判断当前用户是否收藏
+// 抽取方法判断当前用户是否点赞
 func CheckIsPraise(ctx context.Context, in model.CheckIsCollectionInput) (bool, error) {
 	condition := g.Map{
 		dao.PraiseInfo.Columns().UserId:   ctx.Value(consts.CtxUserId),

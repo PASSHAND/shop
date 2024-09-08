@@ -4,7 +4,6 @@ import "github.com/gogf/gf/v2/frame/g"
 
 type AddPraiseReq struct {
 	g.Meta   `path:"/add/praise" method:"post" tags:"前台点赞" summary:"添加点赞"`
-	UserId   uint  `json:"user_id"     description:"用户id"`
 	ObjectId uint  `json:"object_id"   description:"对象id" v:"required#对象id必填"`
 	Type     uint8 `json:"type"       description:"点赞类型：1商品 2文章" v:"in:1,2"`
 }
