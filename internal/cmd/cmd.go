@@ -88,6 +88,7 @@ var (
 				)
 				group.Bind(
 					controller.User.Register,
+					controller.Goods,
 					//controller.Login, //登陆
 				)
 				//需要登录鉴权路由组
