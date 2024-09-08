@@ -62,6 +62,6 @@ type GoodsDetailInput struct {
 type GoodsDetailOutput struct {
 	do.GoodsInfo
 	Option    []do.GoodsOptionsInfo `orm:"with:goods_id=id"` //规格 sku
-	Comment   entity.CommentInfo    `orm:"with:object_id=id, where:type=1"`
-	IsComment bool                  `json:"is_comment"`
+	Comment   []*CommentBase        `orm:"with:object_id=id, where:type=1"`
+	IsCollect bool                  `json:"is_collect"`
 }

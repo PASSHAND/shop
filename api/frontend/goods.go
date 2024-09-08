@@ -24,8 +24,8 @@ type GoodsDetailReq struct {
 }
 
 type GoodsDetailRes struct {
-	entity.GoodsInfo
-	Option    interface{} `json:"option"` //规格 sku
-	Comment   interface{} `json:"comment"`
-	IsComment bool        `json:"is_comment"`
+	entity.GoodsInfo             //会变成驼峰命名
+	Option           interface{} `json:"option"` //规格 sku
+	Comment          interface{} `json:"comment"`
+	IsCollect        bool        `json:"is_collect"`
 }
